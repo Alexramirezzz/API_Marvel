@@ -17,7 +17,6 @@ const FavoriteComics = () => {
 
   return (
     <div className="favorite-comics">
-      <h2>Cómics Favoritos</h2>
       {favorites.length > 0 ? (
         favorites.map((comic) => (
           <div key={comic.id} className="favorite-item">

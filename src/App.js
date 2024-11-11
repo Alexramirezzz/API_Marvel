@@ -3,6 +3,7 @@ import ComicList from './components/ComicList';
 import ComicDetail from './components/ComicDetail';
 import FavoriteComics from './components/FavoriteComics';
 import './index.css';
+//import './App.css'
 
 function App() {
   const [selectedComicId, setSelectedComicId] = useState(null);
@@ -32,7 +33,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Marvel Comics</h1>
+      <h1 className="app-title">Marvel Comics</h1>
       
       {/* Mostrar el botón adecuado según la vista */}
       {showFavorites ? (
@@ -42,7 +43,10 @@ function App() {
       )}
       
       {showFavorites ? (
+        <>
+          <h2 className="favorites-title">Comics Favoritos</h2>
         <FavoriteComics />
+        </>
       ) : selectedComicId ? (
         <ComicDetail comicId={selectedComicId} onFavoriteToggle={addToFavorites} onBackToComics={showComicList}/>
       ) : (
