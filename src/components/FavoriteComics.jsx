@@ -1,13 +1,13 @@
 // src/components/FavoriteComics.jsx
 import React, { useEffect, useState } from 'react';
 
-const FavoriteComics = () => {
+const FavoriteComics = ({ onComicSelect, onClearFavorites }) => {
   const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
     const savedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
     setFavorites(savedFavorites);
-  }, []); // Cargar favoritos al montar el componente
+  }, []);
 
   const removeFromFavorites = (comicId) => {
     const updatedFavorites = favorites.filter((comic) => comic.id !== comicId);
@@ -15,14 +15,27 @@ const FavoriteComics = () => {
     localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
   };
 
+  const clearFavorites = () => {
+    setFavorites([]);
+    onClearFavorites(); // Llama a la función para limpiar favoritos y actualizar vista
+  };
+
   return (
     <div className="favorite-comics">
+      <h2 className='app-title'>Tus Comics Favoritos</h2>
       {favorites.length > 0 ? (
         favorites.map((comic) => (
-          <div key={comic.id} className="favorite-item">
+          <div 
+            key={comic.id} 
+            className="favorite-item" 
+            onClick={() => onComicSelect(comic.id)} // Seleccionar cómic para ver detalles
+            style={{ cursor: 'pointer' }} // Añade un puntero para indicar que es clickeable
+          >
             <img src={`${comic.thumbnail.path}.${comic.thumbnail.extension}`} alt={comic.title} />
             <h3>{comic.title}</h3>
-            <button onClick={() => removeFromFavorites(comic.id)}>Eliminar de favoritos</button>
+            <button onClick={(e) => { e.stopPropagation(); removeFromFavorites(comic.id); }}>
+              Eliminar de favoritos
+            </button>
           </div>
         ))
       ) : (
